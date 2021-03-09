@@ -1,0 +1,6 @@
+CREATE TABLE student (
+  uuid UUID PRIMARY KEY,
+  name VARCHAR(50) NOT NULL,
+  dob DATE NOT NULL,
+  gpa REAL NOT NULL
+);
