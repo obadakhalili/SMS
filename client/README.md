@@ -1,7 +1,7 @@
-To run the client in your local machine, run
+To run the client on your local machine, run
 
 ```sh
-yarn isntall
+yarn install
 # OR
 npm install
 ```
