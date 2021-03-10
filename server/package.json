@@ -8,7 +8,7 @@
     "build": "tsc",
     "watch": "tsc --watch",
     "dev": "env-cmd nodemon dist/server.js",
-    "prettify": "npx prettier --write"
+    "prettify": "npx prettier --config ../.prettierrc.js --write"
   },
   "dependencies": {
     "express": "^4.17.1",
