@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction, query } from "express"
+import { Request, Response, NextFunction } from "express"
 import { v4 as uuidv4 } from "uuid"
 import db from "../db"
 
@@ -40,7 +40,13 @@ async function addStudent(req: Request, res: Response, next: NextFunction) {
 
 async function updateStudent(req: Request, res: Response, next: NextFunction) {
   try {
-    const composedUpdationString = Object.entries(req.body)
+    const composedUpdationString = Object.entries(
+      req.body as {
+        name: string
+        dob: string
+        gpa: number
+      }
+    )
       .filter(([_, value]) => value)
       .map(
         ([key, value]) =>

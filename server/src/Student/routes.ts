@@ -1,7 +1,7 @@
 import express from "express"
-import controllers from "./controllers"
 import middlewares from "../middlewares"
 import schemas from "./schemas"
+import controllers from "./controllers"
 
 const router = express.Router()
 
