@@ -22,7 +22,7 @@ DEBUG=false # If set to true, it will print
 - Install the necessary dependencies
 
 ```sh
-yarn add
+yarn install
 # OR
 npm install
 ```
