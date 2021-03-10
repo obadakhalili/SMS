@@ -18,7 +18,7 @@
   "scripts": {
     "start": "set PORT=8080 && react-scripts start",
     "build": "react-scripts build",
-    "prettify": "npx prettier --config ../.prettierrc.js --write",
+    "prettify": "npx prettier --config ../.prettierrc.js --ignore-path ../.gitignore --write",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {

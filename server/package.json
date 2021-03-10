@@ -4,11 +4,11 @@
   "description": "Backend API for SMS",
   "private": true,
   "scripts": {
-    "start": "node dist/server.js",
+    "start": "node build/server.js",
     "build": "tsc",
     "watch": "tsc --watch",
-    "dev": "env-cmd nodemon dist/server.js",
-    "prettify": "npx prettier --config ../.prettierrc.js --write"
+    "dev": "env-cmd nodemon build/server.js",
+    "prettify": "npx prettier --config ../.prettierrc.js --ignore-path ../.gitignore --write"
   },
   "dependencies": {
     "express": "^4.17.1",
