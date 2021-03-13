@@ -22,13 +22,14 @@ async function addStudent(req: Request, res: Response, next: NextFunction) {
       dob: string
       gpa: number
     }
+    const uuid = uuidv4()
     await db.query("INSERT INTO student VALUES ($1, $2, $3, $4)", [
-      uuidv4(),
+      uuid,
       name,
       dob,
       gpa,
     ])
-    res.end()
+    res.json({ uuid })
   } catch (error) {
     next({
       error,

@@ -6,7 +6,7 @@ const shared = {
     "string.empty": "Name cannot be empty",
   }),
   dob: Joi.date().iso().messages({
-    "date.format": "Date of birth must be in ISO format (YYYY-MM-DD)",
+    "date.format": "Date of birth must be in ISO format",
   }),
   gpa: Joi.number().min(0).max(4).messages({
     "number.min": "GPA can't be less than 0",
