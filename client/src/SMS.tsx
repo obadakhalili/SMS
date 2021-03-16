@@ -14,7 +14,6 @@ export type Student = {
   name: string
   dob: string
   gpa: number
-  collapsed: boolean
 }
 
 export type Students = Student[]
@@ -37,15 +36,13 @@ export default function SMS() {
   }, [students, searchValue])
 
   useEffect(() => {
-    apiService<Omit<Student, "collapsed">[]>(services.getStudents).then(
+    apiService<Students>(services.getStudents).then(
       (response) => {
         if ("error" in response) {
           return console.log(response)
         }
 
-        setStudents(
-          response.map((student) => ({ ...student, collapsed: false }))
-        )
+        setStudents(response)
       }
     )
   }, [])
