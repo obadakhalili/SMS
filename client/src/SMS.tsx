@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react"
+import React, { createContext, useEffect, useMemo, useState } from "react"
 
 import apiService, { services } from "./apiService"
 
@@ -18,6 +18,10 @@ export type Student = {
 
 export type Students = Student[]
 
+export const StudentContext = createContext(
+  {} as { [key: string]: (uuid: string) => void }
+)
+
 export default function SMS() {
   const [searchValue, setSearchValue] = useState("")
 
@@ -36,15 +40,13 @@ export default function SMS() {
   }, [students, searchValue])
 
   useEffect(() => {
-    apiService<Students>(services.getStudents).then(
-      (response) => {
-        if ("error" in response) {
-          return console.log(response)
-        }
-
-        setStudents(response)
+    apiService<Students>(services.getStudents).then((response) => {
+      if ("error" in response) {
+        return console.log(response) // Display alerts
       }
-    )
+
+      setStudents(response)
+    })
   }, [])
 
   return (
@@ -59,7 +61,9 @@ export default function SMS() {
       />
       {filteredStudents ? (
         filteredStudents.length ? (
-          <ListGroup students={filteredStudents} />
+          <StudentContext.Provider value={{ deleteStudent }}>
+            <ListGroup students={filteredStudents} />
+          </StudentContext.Provider>
         ) : (
           <strong>No students to show</strong>
         )
@@ -73,5 +77,17 @@ export default function SMS() {
 
   function updateSearchValue(newSearchValue: string) {
     setSearchValue(newSearchValue)
+  }
+
+  async function deleteStudent(uuid: string) {
+    const response = await apiService<void>(() => services.deleteStudent(uuid))
+
+    if (response) {
+      return console.log(response) // Display alerts
+    }
+
+    setStudents(
+      (students as Students).filter((student) => student.uuid !== uuid)
+    )
   }
 }

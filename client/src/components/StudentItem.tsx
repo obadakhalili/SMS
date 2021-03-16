@@ -1,6 +1,7 @@
-import React, { useState } from "react"
+import React, { useContext, useState } from "react"
 
-import { Student } from "../SMS"
+import { Student, StudentContext } from "../SMS"
+import { ConfirmationModalDetails } from "./StudentsList"
 
 import Accordion from "react-bootstrap/Accordion"
 import ListGroupItem from "react-bootstrap/ListGroupItem"
@@ -11,8 +12,15 @@ import Card from "react-bootstrap/Card"
 
 import { FiEdit2, FiTrash, FiChevronDown, FiChevronUp } from "react-icons/fi"
 
-export default function ({ student }: { student: Student }) {
+export default function ({
+  student,
+  openConfirmationModal,
+}: {
+  student: Student
+  openConfirmationModal: (details: ConfirmationModalDetails) => void
+}) {
   const [collapsed, setCollapsed] = useState(false)
+  const studentContext = useContext(StudentContext)
 
   return (
     <Accordion>
@@ -29,7 +37,7 @@ export default function ({ student }: { student: Student }) {
                 </Button>
               </Col>
               <Col className="d-flex justify-content-center">
-                <Button variant="danger">
+                <Button onClick={handleDeleteButtonClick} variant="danger">
                   <FiTrash />
                 </Button>
               </Col>
@@ -58,5 +66,12 @@ export default function ({ student }: { student: Student }) {
 
   function handleCollapseArrowClick() {
     setCollapsed(!collapsed)
+  }
+
+  function handleDeleteButtonClick() {
+    openConfirmationModal({
+      title: `Sure you want to delete student ${student.name}?`,
+      action: () => studentContext.deleteStudent(student.uuid),
+    })
   }
 }
