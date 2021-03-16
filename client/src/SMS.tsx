@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useMemo, useState } from "react"
 
 import apiService, { services } from "./apiService"
 
@@ -24,6 +24,18 @@ export default function SMS() {
 
   const [students, setStudents] = useState<Students | null>(null)
 
+  const filteredStudents = useMemo(() => {
+    if (students) {
+      const comparator = searchValue.trim().toLowerCase()
+      return students.filter(
+        (student) =>
+          student.name.toLowerCase().includes(comparator) ||
+          student.dob.toLowerCase().includes(comparator) ||
+          String(student.gpa).toLowerCase().includes(comparator)
+      )
+    }
+  }, [students, searchValue])
+
   useEffect(() => {
     apiService<Omit<Student, "collapsed">[]>(services.getStudents).then(
       (response) => {
@@ -48,9 +60,9 @@ export default function SMS() {
         updateSearchValue={updateSearchValue}
         className="my-5"
       />
-      {students ? (
-        students.length ? (
-          <ListGroup students={students} />
+      {filteredStudents ? (
+        filteredStudents.length ? (
+          <ListGroup students={filteredStudents} />
         ) : (
           <strong>No students to show</strong>
         )

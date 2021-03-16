@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState } from "react"
 
 import { Student } from "../SMS"
 
@@ -8,18 +8,42 @@ import Row from "react-bootstrap/Row"
 import Col from "react-bootstrap/Col"
 import Button from "react-bootstrap/Button"
 import Card from "react-bootstrap/Card"
-import { FiChevronDown } from "react-icons/fi"
+
+import { FiEdit2, FiTrash, FiChevronDown, FiChevronUp } from "react-icons/fi"
 
 export default function ({ student }: { student: Student }) {
+  const [collapsed, setCollapsed] = useState(false)
+
   return (
     <Accordion>
       <ListGroupItem>
-        <Row className="align-items-center">
-          <Col sm={11}>{student.name}</Col>
-          <Col sm={1}>
-            <Accordion.Toggle as={Button} variant="link" eventKey="0">
-              <FiChevronDown />
-            </Accordion.Toggle>
+        <Row>
+          <Col md={9} className="text-truncate mb-2">
+            {student.name}
+          </Col>
+          <Col md={3}>
+            <Row className="align-items-center no-gutters">
+              <Col className="d-flex justify-content-center">
+                <Button variant="success">
+                  <FiEdit2 />
+                </Button>
+              </Col>
+              <Col className="d-flex justify-content-center">
+                <Button variant="danger">
+                  <FiTrash />
+                </Button>
+              </Col>
+              <Col className="d-flex justify-content-center">
+                <Accordion.Toggle
+                  onClick={handleCollapseArrowClick}
+                  as={Button}
+                  variant="link"
+                  eventKey="0"
+                >
+                  {collapsed ? <FiChevronUp /> : <FiChevronDown />}
+                </Accordion.Toggle>
+              </Col>
+            </Row>
           </Col>
         </Row>
       </ListGroupItem>
@@ -31,4 +55,8 @@ export default function ({ student }: { student: Student }) {
       </Accordion.Collapse>
     </Accordion>
   )
+
+  function handleCollapseArrowClick() {
+    setCollapsed(!collapsed)
+  }
 }
