@@ -5,10 +5,12 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "serve": "vite preview",
-    "prettify": "npx prettier --write"
+    "prettify": "npx prettier --config ../.prettierrc.js --ignore-path ../.gitignore --write"
   },
   "dependencies": {
+    "bootstrap": "^4.6.0",
     "react": "^17.0.0",
+    "react-bootstrap": "^1.5.2",
     "react-dom": "^17.0.0"
   },
   "devDependencies": {
