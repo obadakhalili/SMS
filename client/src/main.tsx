@@ -5,8 +5,8 @@ import "./index.css"
 import SMS from "./SMS"
 
 ReactDOM.render(
-  <React.StrictMode>
-    <SMS />
-  </React.StrictMode>,
+  // <React.StrictMode>
+  <SMS />,
+  // </React.StrictMode>,
   document.getElementById("root")
 )

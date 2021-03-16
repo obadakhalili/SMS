@@ -7,6 +7,7 @@ import Row from "react-bootstrap/Row"
 import Spinner from "react-bootstrap/Spinner"
 
 import SearchBar from "./components/SearchBar"
+import ListGroup from "./components/StudentsList"
 
 export type Student = {
   uuid: string
@@ -16,7 +17,7 @@ export type Student = {
   collapsed: boolean
 }
 
-type Students = Student[]
+export type Students = Student[]
 
 export default function SMS() {
   const [searchValue, setSearchValue] = useState("")
@@ -49,7 +50,7 @@ export default function SMS() {
       />
       {students ? (
         students.length ? (
-          "list"
+          <ListGroup students={students} />
         ) : (
           <strong>No students to show</strong>
         )
