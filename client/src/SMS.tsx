@@ -25,19 +25,19 @@ export const StudentContext = createContext(
 export default function SMS() {
   const [searchValue, setSearchValue] = useState("")
 
-  const [students, setStudents] = useState<Students | null>(null)
+  const [isLoading, setIsLoading] = useState(true)
+
+  const [students, setStudents] = useState<Students>([])
 
   const filteredStudents = useMemo(() => {
-    if (students) {
-      const comparator = searchValue.trim().toLowerCase()
-      return students.filter(
-        (student) =>
-          student.name.toLowerCase().includes(comparator) ||
-          student.dob.toLowerCase().includes(comparator) ||
-          String(student.gpa).toLowerCase().includes(comparator)
-      )
-    }
-  }, [students, searchValue])
+    const comparator = searchValue.trim().toLowerCase()
+    return students.filter(
+      (student) =>
+        student.name.toLowerCase().includes(comparator) ||
+        student.dob.toLowerCase().includes(comparator) ||
+        String(student.gpa).toLowerCase().includes(comparator)
+    )
+  }, [searchValue, students])
 
   useEffect(() => {
     apiService<Students>(services.getStudents).then((response) => {
@@ -46,6 +46,7 @@ export default function SMS() {
       }
 
       setStudents(response)
+      setIsLoading(false)
     })
   }, [])
 
@@ -59,18 +60,16 @@ export default function SMS() {
         updateSearchValue={updateSearchValue}
         className="my-5"
       />
-      {filteredStudents ? (
-        filteredStudents.length ? (
-          <StudentContext.Provider value={{ deleteStudent }}>
-            <ListGroup students={filteredStudents} />
-          </StudentContext.Provider>
-        ) : (
-          <strong>No students to show</strong>
-        )
-      ) : (
+      {isLoading ? (
         <Row className="justify-content-center">
           <Spinner animation="border" variant="primary" />
         </Row>
+      ) : filteredStudents.length ? (
+        <StudentContext.Provider value={{ deleteStudent }}>
+          <ListGroup students={filteredStudents} />
+        </StudentContext.Provider>
+      ) : (
+        <strong>No students to show</strong>
       )}
     </Container>
   )
@@ -86,8 +85,6 @@ export default function SMS() {
       return console.log(response) // Display alerts
     }
 
-    setStudents(
-      (students as Students).filter((student) => student.uuid !== uuid)
-    )
+    setStudents(students.filter((student) => student.uuid !== uuid))
   }
 }
