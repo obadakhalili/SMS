@@ -9,6 +9,8 @@ import Spinner from "react-bootstrap/Spinner"
 import SearchBar from "./components/SearchBar"
 import ListGroup from "./components/StudentsList"
 
+import { useAlert } from "react-alert"
+
 export type Student = {
   uuid: string
   name: string
@@ -19,13 +21,15 @@ export type Student = {
 export type Students = Student[]
 
 export const StudentContext = createContext(
-  {} as { [key: string]: (uuid: string) => void }
+  {} as { deleteStudent: (uuid: string) => void }
 )
 
 export default function SMS() {
   const [searchValue, setSearchValue] = useState("")
 
   const [isLoading, setIsLoading] = useState(true)
+
+  const alert = useAlert()
 
   const [students, setStudents] = useState<Students>([])
 
@@ -41,12 +45,13 @@ export default function SMS() {
 
   useEffect(() => {
     apiService<Students>(services.getStudents).then((response) => {
+      setIsLoading(false)
+
       if ("error" in response) {
-        return console.log(response) // Display alerts
+        return response.messages.forEach((message) => alert.error(message))
       }
 
       setStudents(response)
-      setIsLoading(false)
     })
   }, [])
 
@@ -82,7 +87,7 @@ export default function SMS() {
     const response = await apiService<void>(() => services.deleteStudent(uuid))
 
     if (response) {
-      return console.log(response) // Display alerts
+      return response.messages.forEach((message) => alert.error(message))
     }
 
     setStudents(students.filter((student) => student.uuid !== uuid))
