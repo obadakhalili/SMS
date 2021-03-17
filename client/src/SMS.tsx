@@ -1,5 +1,7 @@
 import React, { createContext, useEffect, useMemo, useState } from "react"
 
+import { useAlert } from "react-alert"
+
 import apiService, { services } from "./apiService"
 
 import Container from "react-bootstrap/Container"
@@ -7,9 +9,7 @@ import Row from "react-bootstrap/Row"
 import Spinner from "react-bootstrap/Spinner"
 
 import SearchBar from "./components/SearchBar"
-import ListGroup from "./components/StudentsList"
-
-import { useAlert } from "react-alert"
+import StudentsList from "./components/StudentsList"
 
 export type Student = {
   uuid: string
@@ -71,7 +71,7 @@ export default function SMS() {
         </Row>
       ) : filteredStudents.length ? (
         <StudentContext.Provider value={{ deleteStudent }}>
-          <ListGroup students={filteredStudents} />
+          <StudentsList students={filteredStudents} />
         </StudentContext.Provider>
       ) : (
         <strong>No students to show</strong>

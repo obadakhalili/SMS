@@ -31,25 +31,31 @@ export default function ({
           </Col>
           <Col md={3}>
             <Row className="align-items-center no-gutters">
-              <Col className="d-flex justify-content-center">
-                <Button variant="success">
-                  <FiEdit2 />
-                </Button>
+              <Col>
+                <Row className="justify-content-center">
+                  <Button variant="success">
+                    <FiEdit2 />
+                  </Button>
+                </Row>
               </Col>
-              <Col className="d-flex justify-content-center">
-                <Button onClick={handleDeleteButtonClick} variant="danger">
-                  <FiTrash />
-                </Button>
+              <Col>
+                <Row className="justify-content-center">
+                  <Button onClick={handleDeleteButtonClick} variant="danger">
+                    <FiTrash />
+                  </Button>
+                </Row>
               </Col>
-              <Col className="d-flex justify-content-center">
-                <Accordion.Toggle
-                  onClick={handleCollapseArrowClick}
-                  as={Button}
-                  variant="link"
-                  eventKey="0"
-                >
-                  {collapsed ? <FiChevronUp /> : <FiChevronDown />}
-                </Accordion.Toggle>
+              <Col>
+                <Row className="justify-content-center">
+                  <Accordion.Toggle
+                    onClick={handleCollapseArrowClick}
+                    as={Button}
+                    variant="link"
+                    eventKey="0"
+                  >
+                    {collapsed ? <FiChevronUp /> : <FiChevronDown />}
+                  </Accordion.Toggle>
+                </Row>
               </Col>
             </Row>
           </Col>

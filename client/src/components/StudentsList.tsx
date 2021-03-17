@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { useState } from "react"
 
 import { Students } from "../SMS"
 
@@ -31,15 +31,15 @@ export default function ({ students }: { students: Students }) {
           />
         ))}
       </ListGroup>
-      <Modal show={confirmationModalIsOpen} onHide={handleModalCloseButton}>
+      <Modal show={confirmationModalIsOpen} onHide={handleModalClose}>
         <ModalHeader>
           <ModalTitle>{confirmationModalDetails.title}</ModalTitle>
         </ModalHeader>
         <ModalFooter>
-          <Button onClick={handleModalCloseButton} variant="secondary">
+          <Button onClick={handleModalClose} variant="secondary">
             Nope
           </Button>
-          <Button onClick={confirmationModalDetails.action} variant="primary">
+          <Button onClick={handleModalActionButtonClick} variant="primary">
             Yes
           </Button>
         </ModalFooter>
@@ -47,12 +47,17 @@ export default function ({ students }: { students: Students }) {
     </>
   )
 
-  function handleModalCloseButton() {
+  function handleModalClose() {
     setConfirmationModalIsOpen(false)
   }
 
   function openConfirmationModal(details: ConfirmationModalDetails) {
     setConfirmationModalDetails(details)
     setConfirmationModalIsOpen(true)
+  }
+
+  function handleModalActionButtonClick() {
+    setConfirmationModalIsOpen(false)
+    confirmationModalDetails.action()
   }
 }
