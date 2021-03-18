@@ -1,6 +1,8 @@
 import React, { ChangeEvent } from "react"
 
-import Form from "react-bootstrap/Form"
+import FormGroup from "react-bootstrap/FormGroup"
+import FormLabel from "react-bootstrap/FormLabel"
+import FormControl from "react-bootstrap/FormControl"
 
 export default function ({
   searchValue,
@@ -12,14 +14,14 @@ export default function ({
   className: string
 }) {
   return (
-    <Form.Group {...props}>
-      <Form.Label>Search</Form.Label>
-      <Form.Control
+    <FormGroup {...props}>
+      <FormLabel>Search</FormLabel>
+      <FormControl
         value={searchValue}
         onChange={handleInputChange}
         placeholder="Search by name/dob/gpa .."
       />
-    </Form.Group>
+    </FormGroup>
   )
 
   function handleInputChange(e: ChangeEvent<HTMLInputElement>) {

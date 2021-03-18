@@ -141,7 +141,7 @@ export default function ({
     e.preventDefault()
 
     const numericGpa = Number(studentInfo.gpa)
-    
+
     if (studentInfo.gpa && !isNaN(numericGpa)) {
       addStudent({ ...studentInfo, gpa: numericGpa })
       return setModalIsOpen(false)

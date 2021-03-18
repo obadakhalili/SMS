@@ -1,6 +1,8 @@
-import React, { useContext, useState } from "react"
+import React, { ChangeEvent, useContext, useState } from "react"
 
-import { Student, StudentContext } from "../SMS"
+import { useAccordionToggle } from "react-bootstrap"
+
+import { NewStudentInfo, Student, StudentContext } from "../SMS"
 import { ConfirmationModalDetails } from "./StudentsList"
 
 import Accordion from "react-bootstrap/Accordion"
@@ -9,8 +11,53 @@ import Row from "react-bootstrap/Row"
 import Col from "react-bootstrap/Col"
 import Button from "react-bootstrap/Button"
 import Card from "react-bootstrap/Card"
+import FormControl from "react-bootstrap/FormControl"
 
-import { FiEdit2, FiTrash, FiChevronDown, FiChevronUp } from "react-icons/fi"
+import {
+  FiCheck,
+  FiEdit2,
+  FiTrash,
+  FiChevronDown,
+  FiChevronUp,
+} from "react-icons/fi"
+
+function EditStudentButton({
+  isCollapsed,
+  setIsCollapsed,
+  isInEditMode,
+  setIsInEditMode,
+  saveStudentInfo,
+  eventKey,
+}: {
+  isCollapsed: boolean
+  setIsCollapsed: (isCollapsed: true) => void
+  isInEditMode: boolean
+  setIsInEditMode: (isInEditMode: true) => void
+  saveStudentInfo: () => void
+  eventKey: string
+}) {
+  const decoratedOnClick = useAccordionToggle(eventKey, () =>
+    setIsCollapsed(true)
+  )
+
+  return isInEditMode ? (
+    <Button onClick={saveStudentInfo} variant="secondary">
+      <FiCheck />
+    </Button>
+  ) : (
+    <Button onClick={handleToggleButtonClick} variant="success">
+      <FiEdit2 />
+    </Button>
+  )
+
+  function handleToggleButtonClick(e: any) {
+    setIsInEditMode(true)
+
+    if (!isCollapsed) {
+      decoratedOnClick(e)
+    }
+  }
+}
 
 export default function ({
   student,
@@ -19,7 +66,16 @@ export default function ({
   student: Student
   openConfirmationModal: (details: ConfirmationModalDetails) => void
 }) {
-  const [collapsed, setCollapsed] = useState(false)
+  const [isCollapsed, setIsCollapsed] = useState(false)
+
+  const [isInEditMode, setIsInEditMode] = useState(false)
+
+  const [newStudentInfo, setNewStudentInfo] = useState<NewStudentInfo>({
+    name: student.name,
+    dob: student.dob,
+    gpa: student.gpa,
+  })
+
   const studentContext = useContext(StudentContext)
 
   return (
@@ -27,15 +83,29 @@ export default function ({
       <ListGroupItem>
         <Row>
           <Col md={9} className="text-truncate mb-2">
-            {student.name}
+            {isInEditMode ? (
+              <FormControl
+                value={newStudentInfo.name}
+                onChange={handleFormChange}
+                name="name"
+                placeholder="New name"
+              />
+            ) : (
+              student.name
+            )}
           </Col>
           <Col md={3}>
             <Row className="align-items-center no-gutters">
               <Col>
                 <Row className="justify-content-center">
-                  <Button variant="success">
-                    <FiEdit2 />
-                  </Button>
+                  <EditStudentButton
+                    isCollapsed={isCollapsed}
+                    isInEditMode={isInEditMode}
+                    setIsCollapsed={setIsCollapsed}
+                    setIsInEditMode={setIsInEditMode}
+                    saveStudentInfo={saveStudentInfo}
+                    eventKey="0"
+                  />
                 </Row>
               </Col>
               <Col>
@@ -53,7 +123,7 @@ export default function ({
                     variant="link"
                     eventKey="0"
                   >
-                    {collapsed ? <FiChevronUp /> : <FiChevronDown />}
+                    {isCollapsed ? <FiChevronUp /> : <FiChevronDown />}
                   </Accordion.Toggle>
                 </Row>
               </Col>
@@ -63,15 +133,54 @@ export default function ({
       </ListGroupItem>
       <Accordion.Collapse eventKey="0">
         <Card.Body>
-          <Card.Title>{student.dob}</Card.Title>
-          <Card.Title>{student.gpa}</Card.Title>
+          <Card.Title>
+            {isInEditMode ? (
+              <FormControl
+                value={newStudentInfo.dob}
+                onChange={handleFormChange}
+                name="dob"
+                placeholder="New dob"
+              />
+            ) : (
+              student.dob
+            )}
+          </Card.Title>
+          <Card.Title>
+            {isInEditMode ? (
+              <FormControl
+                value={newStudentInfo.gpa}
+                onChange={handleFormChange}
+                name="gpa"
+                placeholder="New gpa"
+              />
+            ) : (
+              student.gpa
+            )}
+          </Card.Title>
         </Card.Body>
       </Accordion.Collapse>
     </Accordion>
   )
 
-  function handleCollapseArrowClick() {
-    setCollapsed(!collapsed)
+  function saveStudentInfo() {
+    const studentInfoChanged = Object.entries(newStudentInfo).some(
+      ([key, value]) => value !== student[key as keyof NewStudentInfo]
+    )
+
+    if (studentInfoChanged) {
+      return openConfirmationModal({
+        title: `Sure you want to save student ${student.name} new info?`,
+        action: async () => {
+          const wentWell = await studentContext.updateStudent(
+            student.uuid,
+            newStudentInfo
+          )
+          return wentWell && setIsInEditMode(false)
+        },
+      })
+    }
+
+    setIsInEditMode(false)
   }
 
   function handleDeleteButtonClick() {
@@ -79,5 +188,13 @@ export default function ({
       title: `Sure you want to delete student ${student.name}?`,
       action: () => studentContext.deleteStudent(student.uuid),
     })
+  }
+
+  function handleCollapseArrowClick() {
+    setIsCollapsed(!isCollapsed)
+  }
+
+  function handleFormChange(e: ChangeEvent<HTMLInputElement>) {
+    setNewStudentInfo({ ...newStudentInfo, [e.target.name]: e.target.value })
   }
 }

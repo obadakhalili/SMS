@@ -23,7 +23,13 @@ export type NewStudentInfo = Omit<Student, "uuid">
 export type Students = Student[]
 
 export const StudentContext = createContext(
-  {} as { deleteStudent: (uuid: string) => void }
+  {} as {
+    updateStudent: (
+      uuid: string,
+      newStudentInfo: NewStudentInfo
+    ) => Promise<boolean>
+    deleteStudent: (uuid: string) => void
+  }
 )
 
 export default function SMS() {
@@ -73,7 +79,7 @@ export default function SMS() {
           <Spinner animation="border" variant="primary" />
         </Row>
       ) : filteredStudents.length ? (
-        <StudentContext.Provider value={{ deleteStudent }}>
+        <StudentContext.Provider value={{ deleteStudent, updateStudent }}>
           <StudentsList students={filteredStudents} />
         </StudentContext.Provider>
       ) : (
@@ -84,6 +90,23 @@ export default function SMS() {
 
   function updateSearchValue(newSearchValue: string) {
     setSearchValue(newSearchValue)
+  }
+
+  async function updateStudent(uuid: string, newStudentInfo: NewStudentInfo) {
+    const response = await apiService<void>(() =>
+      services.updateStudent(uuid, newStudentInfo)
+    )
+
+    if (response) {
+      response.messages.forEach((message) => alert.error(message))
+      return false
+    }
+
+    const foo = students.find((student) => student.uuid === uuid)
+
+    Object.assign(foo, newStudentInfo)
+    setStudents([...students])
+    return true
   }
 
   async function deleteStudent(uuid: string) {
