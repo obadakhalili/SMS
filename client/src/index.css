@@ -1,0 +1,5 @@
+.students-list {
+  max-height: 500px;
+  overflow-y: auto;
+  margin-bottom: 50px;
+}

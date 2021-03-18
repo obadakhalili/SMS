@@ -13,7 +13,7 @@ import StudentItem from "./StudentItem"
 
 export type ConfirmationModalDetails = { title: string; action: () => void }
 
-export default function ({ students }: { students: Students }) {
+export default function ({ students, ...props }: { students: Students, className: string }) {
   const [confirmationModalIsOpen, setConfirmationModalIsOpen] = useState(false)
   const [
     confirmationModalDetails,
@@ -22,7 +22,7 @@ export default function ({ students }: { students: Students }) {
 
   return (
     <>
-      <ListGroup>
+      <ListGroup {...props}>
         {students.map((student) => (
           <StudentItem
             key={student.uuid}

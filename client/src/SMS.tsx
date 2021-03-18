@@ -80,7 +80,7 @@ export default function SMS() {
         </Row>
       ) : filteredStudents.length ? (
         <StudentContext.Provider value={{ deleteStudent, updateStudent }}>
-          <StudentsList students={filteredStudents} />
+          <StudentsList students={filteredStudents} className="students-list" />
         </StudentContext.Provider>
       ) : (
         <strong>No students to show</strong>
