@@ -59,7 +59,7 @@ export default function SMS() {
         return response.messages.forEach((message) => alert.error(message))
       }
 
-      setStudents(response)
+      setStudents(response.map((student) => ({ ...student, dob: formatToISODate(student.dob) })))
     })
   }, [])
 
@@ -130,4 +130,11 @@ export default function SMS() {
 
     setStudents([...students, { ...studentInfo, ...response }])
   }
+}
+
+function formatToISODate(date: string) {
+  const dateObject = new Date(date)
+  return `${String(dateObject.getFullYear()).padStart(4, "0")}-${String(
+    dateObject.getMonth() + 1
+  ).padStart(2, "0")}-${String(dateObject.getDate()).padStart(2, "0")}`
 }
