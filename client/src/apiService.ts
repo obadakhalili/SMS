@@ -1,8 +1,10 @@
+import { NewStudentInfo } from "./SMS"
+
 async function getStudents() {
   return await fetch("/api")
 }
 
-async function addStudent(newStudent: any) {
+async function addStudent(newStudent: NewStudentInfo) {
   return await fetch("/api", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -10,7 +12,7 @@ async function addStudent(newStudent: any) {
   })
 }
 
-async function updateStudent(uuid: string, body: any) {
+async function updateStudent(uuid: string, body: NewStudentInfo) {
   return await fetch("/api/" + uuid, {
     method: "PATCH",
     headers: { "Content-Type": "application/json" },

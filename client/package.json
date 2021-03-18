@@ -5,7 +5,7 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "serve": "vite preview",
-    "prettify": "npx prettier --config ../.prettierrc.js --ignore-path ../.gitignore --write"
+    "prettify": "yarn run prettier --config ../.prettierrc.js --ignore-path ../.gitignore --write"
   },
   "dependencies": {
     "bootstrap": "^4.6.0",

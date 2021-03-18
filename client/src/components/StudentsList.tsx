@@ -31,7 +31,7 @@ export default function ({ students }: { students: Students }) {
           />
         ))}
       </ListGroup>
-      <Modal show={confirmationModalIsOpen} onHide={handleModalClose}>
+      <Modal show={confirmationModalIsOpen} onHide={handleModalClose} size="sm">
         <ModalHeader>
           <ModalTitle>{confirmationModalDetails.title}</ModalTitle>
         </ModalHeader>

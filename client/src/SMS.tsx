@@ -8,7 +8,7 @@ import Container from "react-bootstrap/Container"
 import Row from "react-bootstrap/Row"
 import Spinner from "react-bootstrap/Spinner"
 
-import SearchBar from "./components/SearchBar"
+import UpperBar from "./components/UpperBar"
 import StudentsList from "./components/StudentsList"
 
 export type Student = {
@@ -17,6 +17,8 @@ export type Student = {
   dob: string
   gpa: number
 }
+
+export type NewStudentInfo = Omit<Student, "uuid">
 
 export type Students = Student[]
 
@@ -60,9 +62,10 @@ export default function SMS() {
       <h1 className="text-center">
         Welcome to <span className="text-primary">SMS</span>
       </h1>
-      <SearchBar
+      <UpperBar
         searchValue={searchValue}
         updateSearchValue={updateSearchValue}
+        addStudent={addStudent}
         className="my-5"
       />
       {isLoading ? (
@@ -91,5 +94,17 @@ export default function SMS() {
     }
 
     setStudents(students.filter((student) => student.uuid !== uuid))
+  }
+
+  async function addStudent(studentInfo: NewStudentInfo) {
+    const response = await apiService<{ uuid: string }>(() =>
+      services.addStudent(studentInfo)
+    )
+
+    if ("error" in response) {
+      return response.messages.forEach((message) => alert.error(message))
+    }
+
+    setStudents([...students, { ...studentInfo, ...response }])
   }
 }
