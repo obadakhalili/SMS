@@ -34,8 +34,8 @@ export default function ({
   const [modalIsOpen, setModalIsOpen] = useState(false)
 
   const [studentInfo, setStudentInfo] = useState<NewStudentInfo>({
-    name: "",
-    dob: "",
+    name: "Harry Potter",
+    dob: "1980-08-31",
     gpa: 4,
   })
 
