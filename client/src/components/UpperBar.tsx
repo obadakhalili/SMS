@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FormEvent, useEffect, useState } from "react"
+import React, { ChangeEvent, FormEvent, useState } from "react"
 
 import { useAlert } from "react-alert"
 
