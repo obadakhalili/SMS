@@ -13,7 +13,13 @@ import StudentItem from "./StudentItem"
 
 export type ConfirmationModalDetails = { title: string; action: () => void }
 
-export default function ({ students, ...props }: { students: Students, className: string }) {
+export default function StudentsList({
+  students,
+  ...props
+}: {
+  students: Students
+  className: string
+}) {
   const [confirmationModalIsOpen, setConfirmationModalIsOpen] = useState(false)
   const [
     confirmationModalDetails,
@@ -57,7 +63,7 @@ export default function ({ students, ...props }: { students: Students, className
   }
 
   function handleModalActionButtonClick() {
-    setConfirmationModalIsOpen(false)
     confirmationModalDetails.action()
+    setConfirmationModalIsOpen(false)
   }
 }

@@ -4,7 +4,7 @@ import FormGroup from "react-bootstrap/FormGroup"
 import FormLabel from "react-bootstrap/FormLabel"
 import FormControl from "react-bootstrap/FormControl"
 
-export default function ({
+export default function StudentsFilter({
   searchValue,
   updateSearchValue,
   ...props

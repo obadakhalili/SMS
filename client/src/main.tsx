@@ -13,10 +13,8 @@ const alertOptions = {
 }
 
 ReactDOM.render(
-  // <React.StrictMode>
   <AlertProvider template={AlertTemplate} {...alertOptions}>
     <SMS />
   </AlertProvider>,
-  // </React.StrictMode>,
   document.getElementById("root")
 )

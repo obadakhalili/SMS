@@ -26,14 +26,14 @@ function EditStudentButton({
   setIsCollapsed,
   isInEditMode,
   setIsInEditMode,
-  saveStudentInfo,
+  handleSaveButtonClick,
   eventKey,
 }: {
   isCollapsed: boolean
   setIsCollapsed: (isCollapsed: true) => void
   isInEditMode: boolean
   setIsInEditMode: (isInEditMode: true) => void
-  saveStudentInfo: () => void
+  handleSaveButtonClick: () => void
   eventKey: string
 }) {
   const decoratedOnClick = useAccordionToggle(eventKey, () =>
@@ -41,7 +41,7 @@ function EditStudentButton({
   )
 
   return isInEditMode ? (
-    <Button onClick={saveStudentInfo} variant="secondary">
+    <Button onClick={handleSaveButtonClick} variant="secondary">
       <FiCheck />
     </Button>
   ) : (
@@ -59,7 +59,7 @@ function EditStudentButton({
   }
 }
 
-export default function ({
+export default function StudentItem({
   student,
   openConfirmationModal,
 }: {
@@ -103,7 +103,7 @@ export default function ({
                     isInEditMode={isInEditMode}
                     setIsCollapsed={setIsCollapsed}
                     setIsInEditMode={setIsInEditMode}
-                    saveStudentInfo={saveStudentInfo}
+                    handleSaveButtonClick={handleSaveButtonClick}
                     eventKey="0"
                   />
                 </Row>
@@ -162,7 +162,7 @@ export default function ({
     </Accordion>
   )
 
-  function saveStudentInfo() {
+  function handleSaveButtonClick() {
     const studentInfoChanged = Object.entries(newStudentInfo).some(
       ([key, value]) => value !== student[key as keyof NewStudentInfo]
     )
@@ -175,7 +175,7 @@ export default function ({
             student.uuid,
             newStudentInfo
           )
-          return wentWell && setIsInEditMode(false)
+          wentWell && setIsInEditMode(false)
         },
       })
     }

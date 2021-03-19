@@ -59,7 +59,12 @@ export default function SMS() {
         return response.messages.forEach((message) => alert.error(message))
       }
 
-      setStudents(response.map((student) => ({ ...student, dob: formatToISODate(student.dob) })))
+      setStudents(
+        response.map((student) => ({
+          ...student,
+          dob: formatToISODate(student.dob),
+        }))
+      )
     })
   }, [])
 
@@ -70,7 +75,7 @@ export default function SMS() {
       </h1>
       <UpperBar
         searchValue={searchValue}
-        updateSearchValue={updateSearchValue}
+        updateSearchValue={setSearchValue}
         addStudent={addStudent}
         className="my-5"
       />
@@ -88,10 +93,6 @@ export default function SMS() {
     </Container>
   )
 
-  function updateSearchValue(newSearchValue: string) {
-    setSearchValue(newSearchValue)
-  }
-
   async function updateStudent(uuid: string, newStudentInfo: NewStudentInfo) {
     const response = await apiService<void>(() =>
       services.updateStudent(uuid, newStudentInfo)
@@ -102,9 +103,8 @@ export default function SMS() {
       return false
     }
 
-    const foo = students.find((student) => student.uuid === uuid)
-
-    Object.assign(foo, newStudentInfo)
+    const studentToUpdate = students.find((student) => student.uuid === uuid)
+    Object.assign(studentToUpdate, newStudentInfo)
     setStudents([...students])
     return true
   }

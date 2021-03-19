@@ -20,7 +20,7 @@ import ModalFooter from "react-bootstrap/ModalFooter"
 
 import { FiPlus } from "react-icons/fi"
 
-export default function ({
+export default function UpperBar({
   searchValue,
   updateSearchValue,
   addStudent,
